@@ -7,7 +7,7 @@
     Create a backend+typescript boilerplate containing following features in "be" directory
 </goal>
 
-<features>
+<tech-stack>
     - Node.js
     - TypeScript
     - Supabase (Just DB)
@@ -15,7 +15,7 @@
     - JWT
     - Zod
     - Pino
-</features>
+</tech-stack>
 
 <instructions>
     - Project name will be content-calendar-be

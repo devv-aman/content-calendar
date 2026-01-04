@@ -7,7 +7,7 @@
     Create a react+typescript boilerplate (in current directory) containing the following features
 </goal>
 
-<features>
+<tech-stack>
     - React
     - Vite
     - React Router
@@ -15,7 +15,7 @@
     - Tailwind CSS
     - Axios
     - Shadcn UI
-</features>
+</tech-stack>
 
 <instructions>
     - Project name will be content-calendar

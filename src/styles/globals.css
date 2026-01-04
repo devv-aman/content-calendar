@@ -131,6 +131,12 @@
     --state-focus-ring: rgba(105, 90, 220, 0.40);
     --state-overlay-hover: rgba(25, 27, 34, 0.06);
     --state-overlay-active: rgba(25, 27, 34, 0.10);
+
+    /* --- Star Colors (Light Mode) --- */
+    --star-color-white: rgba(80, 80, 120, 0.6);
+    --star-color-primary: rgba(105, 90, 220, 0.7);
+    --star-color-accent1: rgba(255, 160, 190, 0.6);
+    --star-color-accent2: rgba(255, 202, 108, 0.6);
   }
 
   .dark {
@@ -186,6 +192,12 @@
     --state-focus-ring: rgba(177, 142, 249, 0.50);
     --state-overlay-hover: rgba(230, 232, 238, 0.06);
     --state-overlay-active: rgba(230, 232, 238, 0.10);
+
+    /* --- Star Colors (Dark Mode) --- */
+    --star-color-white: rgba(255, 255, 255, 0.8);
+    --star-color-primary: rgba(177, 142, 249, 0.8);
+    --star-color-accent1: rgba(255, 120, 184, 0.7);
+    --star-color-accent2: rgba(255, 200, 87, 0.7);
   }
 
   * {
@@ -277,5 +289,21 @@
 
 .animate-glitch-delayed {
   animation: glitch 2s infinite 0.05s;
+}
+
+/* Star twinkle animation */
+@keyframes twinkle {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+.animate-twinkle {
+  animation: twinkle 3s ease-in-out infinite;
 }
 

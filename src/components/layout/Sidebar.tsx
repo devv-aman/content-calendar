@@ -1,9 +1,9 @@
 import { useEffect, useCallback } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, Link, useLocation } from "react-router-dom";
 import { X, PanelLeftClose } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useSidebar } from "@/hooks/useSidebar";
-import { NAV_ITEMS } from "@/constants/routes";
+import { NAV_ITEMS, ROUTES } from "@/constants/routes";
 import { APP_STRINGS } from "@/constants/strings";
 import { cn } from "@/lib/utils";
 
@@ -44,9 +44,12 @@ export function Sidebar() {
       >
         {/* Header */}
         <div className="flex items-center justify-between h-16 px-4 border-b border-(--neutral-border-main)">
-          <span className="text-lg font-semibold text-(--neutral-text-primary)">
+          <Link
+            to={ROUTES.HOME}
+            className="text-lg font-semibold text-(--neutral-text-primary) hover:text-(--brand-primary-main) transition-colors"
+          >
             {APP_STRINGS.APP_NAME}
-          </span>
+          </Link>
           <Button
             variant="ghost"
             size="icon-sm"

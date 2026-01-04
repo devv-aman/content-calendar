@@ -1,9 +1,10 @@
-import { Home, Calendar, type LucideIcon } from "lucide-react";
+import { LayoutDashboard, type LucideIcon } from "lucide-react";
 import { APP_STRINGS } from "./strings";
 
 export const ROUTES = {
   HOME: "/",
-  SCHEDULE: "/schedule",
+  AUTH: "/auth",
+  DASHBOARD: "/dashboard",
 } as const;
 
 export interface NavItem {
@@ -14,14 +15,9 @@ export interface NavItem {
 
 export const NAV_ITEMS: NavItem[] = [
   {
-    path: ROUTES.HOME,
-    label: APP_STRINGS.NAV.HOME,
-    icon: Home,
-  },
-  {
-    path: ROUTES.SCHEDULE,
-    label: APP_STRINGS.NAV.SCHEDULE,
-    icon: Calendar,
+    path: ROUTES.DASHBOARD,
+    label: APP_STRINGS.NAV.DASHBOARD,
+    icon: LayoutDashboard,
   },
 ];
 
@@ -29,8 +25,10 @@ export const getPageTitle = (pathname: string): string => {
   switch (pathname) {
     case ROUTES.HOME:
       return APP_STRINGS.PAGES.HOME.TITLE;
-    case ROUTES.SCHEDULE:
-      return APP_STRINGS.PAGES.SCHEDULE.TITLE;
+    case ROUTES.AUTH:
+      return APP_STRINGS.PAGES.AUTH.TITLE;
+    case ROUTES.DASHBOARD:
+      return APP_STRINGS.PAGES.DASHBOARD.TITLE;
     default:
       return APP_STRINGS.APP_NAME;
   }

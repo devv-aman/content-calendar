@@ -4,18 +4,26 @@ export const APP_STRINGS = {
   // Navigation
   NAV: {
     HOME: "Home",
-    SCHEDULE: "Schedule",
+    DASHBOARD: "Dashboard",
+    LOGIN: "Login",
   },
 
   // Pages
   PAGES: {
     HOME: {
       TITLE: "Home",
-      GREETING: "Hello World",
+      HERO_TITLE: "Plan Your Content,",
+      HERO_TITLE_HIGHLIGHT: "Amplify Your Reach",
+      HERO_SUBTITLE:
+        "Streamline your content workflow with our intuitive calendar. Schedule, organize, and track all your content in one powerful platform.",
+      CTA_BUTTON: "Get Started",
     },
-    SCHEDULE: {
-      TITLE: "Schedule",
-      CONTENT: "Schedule",
+    DASHBOARD: {
+      TITLE: "Dashboard",
+      WELCOME_MESSAGE: "Welcome back, {name}!",
+    },
+    AUTH: {
+      TITLE: "Sign In",
     },
     NOT_FOUND: {
       CODE: "404",
@@ -42,5 +50,6 @@ export const APP_STRINGS = {
   USER: {
     DEFAULT_NAME: "User",
     AVATAR_SEED: "content-calendar-user",
+    LOGOUT: "Logout",
   },
 } as const;
