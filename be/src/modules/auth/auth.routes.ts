@@ -6,7 +6,11 @@ import {
   validate,
 } from "../../middlewares/index.js";
 import * as authController from "./auth.controller.js";
-import { loginSchema, registerSchema } from "./auth.schema.js";
+import {
+  loginSchema,
+  registerSchema,
+  googleAuthSchema,
+} from "./auth.schema.js";
 
 const router: RouterType = Router();
 
@@ -20,6 +24,12 @@ router.post(
   ROUTES.AUTH.REGISTER,
   validate({ body: registerSchema }),
   authController.register
+);
+
+router.post(
+  ROUTES.AUTH.GOOGLE,
+  validate({ body: googleAuthSchema }),
+  authController.googleAuth
 );
 
 router.post(

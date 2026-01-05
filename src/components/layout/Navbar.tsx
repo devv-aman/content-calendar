@@ -8,11 +8,18 @@ import { useAuth } from "@/hooks/useAuth";
 import { getPageTitle, ROUTES } from "@/constants/routes";
 import { APP_STRINGS } from "@/constants/strings";
 
-const DICEBEAR_AVATAR_URL = `https://api.dicebear.com/7.x/avataaars/svg?seed=${APP_STRINGS.USER.AVATAR_SEED}`;
+// Generate DiceBear avatar URL using user's email as seed for uniqueness
+const getDiceBearAvatar = (seed: string) =>
+  `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(seed)}`;
 
 export function Navbar() {
   const { isOpen, toggle } = useSidebar();
   const { isAuthenticated, user, logout } = useAuth();
+
+  // Use Google avatar if available, otherwise use DiceBear with user email as seed
+  const avatarUrl =
+    user?.avatar_url ||
+    getDiceBearAvatar(user?.email || APP_STRINGS.USER.AVATAR_SEED);
   const location = useLocation();
   const navigate = useNavigate();
   const pageTitle = getPageTitle(location.pathname);
@@ -75,9 +82,9 @@ export function Navbar() {
           )}
           <ThemeSwitcher />
           {isAuthenticated && (
-            <Avatar className="size-9">
+            <Avatar className="size-7">
               <AvatarImage
-                src={DICEBEAR_AVATAR_URL}
+                src={avatarUrl}
                 alt={user?.name || APP_STRINGS.USER.DEFAULT_NAME}
               />
               <AvatarFallback>

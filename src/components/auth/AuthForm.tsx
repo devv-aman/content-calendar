@@ -38,7 +38,7 @@ export function AuthForm() {
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const { login, register } = useAuth();
+  const { login, register, googleLogin } = useAuth();
   const navigate = useNavigate();
 
   const isLogin = mode === "login";
@@ -116,8 +116,18 @@ export function AuthForm() {
     setErrors({});
   };
 
-  const handleGoogleClick = () => {
-    // TODO: Implement Google OAuth
+  const handleGoogleCredential = async (credential: string) => {
+    setErrors({});
+    try {
+      await googleLogin(credential);
+      navigate(ROUTES.DASHBOARD);
+    } catch (error) {
+      const axiosError = error as AxiosError<{ message?: string }>;
+      const message =
+        axiosError.response?.data?.message ||
+        AUTH_STRINGS.API_ERRORS.GOOGLE_SIGN_IN_FAILED;
+      setErrors({ api: message });
+    }
   };
 
   return (
@@ -135,7 +145,10 @@ export function AuthForm() {
       </div>
 
       {/* Google Sign In */}
-      <GoogleButton onClick={handleGoogleClick} disabled={isSubmitting} />
+      <GoogleButton
+        onCredentialResponse={handleGoogleCredential}
+        disabled={isSubmitting}
+      />
 
       {/* Divider */}
       <div className="flex items-center gap-4 my-6">

@@ -13,9 +13,10 @@ export interface User {
   name: string;
   email: string;
   role: "user" | "admin";
+  google_id: string | null;
+  avatar_url: string | null;
   created_at: string;
   updated_at: string;
-  deleted_at: string | null;
 }
 
 interface AuthState {
@@ -38,6 +39,7 @@ interface RegisterCredentials {
 interface AuthContextType extends AuthState {
   login: (credentials: LoginCredentials) => Promise<void>;
   register: (credentials: RegisterCredentials) => Promise<void>;
+  googleLogin: (credential: string) => Promise<void>;
   logout: () => Promise<void>;
   refetchUser: () => Promise<void>;
 }
@@ -92,6 +94,17 @@ export function AuthProvider({ children }: AuthProviderProps) {
     });
   }, []);
 
+  const googleLogin = useCallback(async (credential: string) => {
+    const response = await apiClient.post("/api/v1/auth/google", {
+      credential,
+    });
+    setState({
+      user: response.data.data,
+      isLoading: false,
+      isAuthenticated: true,
+    });
+  }, []);
+
   const logout = useCallback(async () => {
     try {
       await apiClient.post("/api/v1/auth/logout");
@@ -113,10 +126,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
       ...state,
       login,
       register,
+      googleLogin,
       logout,
       refetchUser: fetchUser,
     }),
-    [state, login, register, logout, fetchUser]
+    [state, login, register, googleLogin, logout, fetchUser]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

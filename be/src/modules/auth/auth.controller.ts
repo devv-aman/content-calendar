@@ -7,7 +7,11 @@ import {
   setAccessTokenCookie,
 } from "../../utils/cookies.js";
 import * as authService from "./auth.service.js";
-import type { LoginInput, RegisterInput } from "./auth.schema.js";
+import type {
+  LoginInput,
+  RegisterInput,
+  GoogleAuthInput,
+} from "./auth.schema.js";
 import type { JwtPayload } from "../../types/index.js";
 
 /**
@@ -81,6 +85,86 @@ export const login = async (
     const message = isNewUser
       ? MESSAGES.AUTH.REGISTER_SUCCESS
       : MESSAGES.AUTH.LOGIN_SUCCESS;
+
+    // Include access token in response if requested (for Swagger testing)
+    const responseData = shouldIncludeToken(req)
+      ? { ...user, accessToken: tokens.accessToken }
+      : user;
+
+    sendSuccess(res, 200, message, responseData);
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * @swagger
+ * /api/v1/auth/google:
+ *   post:
+ *     tags:
+ *       - Auth
+ *     summary: Google OAuth login
+ *     description: Authenticate user with Google OAuth. Creates a new account if user doesn't exist. Add ?includeToken=true to get accessToken in response.
+ *     parameters:
+ *       - in: query
+ *         name: includeToken
+ *         schema:
+ *           type: string
+ *           enum: ["true"]
+ *         description: Set to "true" to include accessToken in response (for testing)
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - credential
+ *             properties:
+ *               credential:
+ *                 type: string
+ *                 description: Google ID token (JWT) from Google Sign-In
+ *     responses:
+ *       200:
+ *         description: Google login successful
+ *         headers:
+ *           Set-Cookie:
+ *             schema:
+ *               type: string
+ *             description: HTTP-only cookies containing access_token and refresh_token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/ApiResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       $ref: '#/components/schemas/User'
+ *       401:
+ *         description: Invalid Google token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ */
+export const googleAuth = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const { credential } = req.body as GoogleAuthInput;
+
+    const { user, tokens, isNewUser } = await authService.googleLogin(
+      credential
+    );
+
+    setAuthCookies(res, tokens.accessToken, tokens.refreshToken);
+
+    const message = isNewUser
+      ? MESSAGES.AUTH.REGISTER_SUCCESS
+      : MESSAGES.AUTH.GOOGLE_LOGIN_SUCCESS;
 
     // Include access token in response if requested (for Swagger testing)
     const responseData = shouldIncludeToken(req)

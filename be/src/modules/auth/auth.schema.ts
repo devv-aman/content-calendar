@@ -27,5 +27,12 @@ export const registerSchema = z.object({
     }),
 });
 
+export const googleAuthSchema = z.object({
+  credential: z
+    .string({ required_error: MESSAGES.AUTH.GOOGLE_TOKEN_REQUIRED })
+    .min(1, { message: MESSAGES.AUTH.GOOGLE_TOKEN_REQUIRED }),
+});
+
 export type LoginInput = z.infer<typeof loginSchema>;
 export type RegisterInput = z.infer<typeof registerSchema>;
+export type GoogleAuthInput = z.infer<typeof googleAuthSchema>;

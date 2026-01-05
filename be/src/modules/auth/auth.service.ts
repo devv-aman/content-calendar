@@ -1,8 +1,15 @@
+import { OAuth2Client } from "google-auth-library";
 import { supabase } from "../../config/database.js";
+import { env } from "../../config/env.js";
 import { DATABASE } from "../../constants/database.js";
 import { MESSAGES } from "../../constants/messages.js";
 import { AUTH } from "../../constants/auth.js";
-import { User, UserResponse, sanitizeUser } from "../../models/user.model.js";
+import {
+  User,
+  UserResponse,
+  sanitizeUser,
+  GoogleUserInput,
+} from "../../models/user.model.js";
 import {
   comparePassword,
   hashPassword,
@@ -13,6 +20,9 @@ import {
   ConflictError,
 } from "../../utils/index.js";
 import type { TokenPair, JwtPayload } from "../../types/index.js";
+
+// Initialize Google OAuth2 client
+const googleClient = new OAuth2Client(env.GOOGLE_CLIENT_ID);
 
 interface AuthResult {
   user: UserResponse;
@@ -106,7 +116,12 @@ export const loginUser = async (
     return registerUser({ name: userName, email, password });
   }
 
-  // User exists, verify password
+  // User exists - check if they have a password (Google users may not have one)
+  if (!user.password) {
+    throw new AuthenticationError(MESSAGES.AUTH.INVALID_CREDENTIALS);
+  }
+
+  // Verify password
   const isValidPassword = await comparePassword(password, user.password);
 
   if (!isValidPassword) {
@@ -172,4 +187,114 @@ export const getUserById = async (userId: string): Promise<UserResponse> => {
   }
 
   return sanitizeUser(user);
+};
+
+/**
+ * Verify Google ID token and extract user info
+ */
+const verifyGoogleToken = async (
+  credential: string
+): Promise<GoogleUserInput> => {
+  try {
+    const ticket = await googleClient.verifyIdToken({
+      idToken: credential,
+      audience: env.GOOGLE_CLIENT_ID,
+    });
+
+    const payload = ticket.getPayload();
+
+    if (!payload || !payload.email || !payload.sub) {
+      throw new AuthenticationError(MESSAGES.AUTH.GOOGLE_TOKEN_INVALID);
+    }
+
+    return {
+      email: payload.email,
+      name: payload.name || payload.email.split("@")[0],
+      google_id: payload.sub,
+      avatar_url: payload.picture || null,
+    };
+  } catch {
+    throw new AuthenticationError(MESSAGES.AUTH.GOOGLE_TOKEN_INVALID);
+  }
+};
+
+/**
+ * Google OAuth login - find or create user
+ */
+export const googleLogin = async (credential: string): Promise<AuthResult> => {
+  // Verify the Google token and extract user info
+  const googleUser = await verifyGoogleToken(credential);
+
+  // Try to find existing user by google_id or email
+  const { data: existingUser } = await supabase
+    .from(DATABASE.TABLES.USERS)
+    .select("*")
+    .or(
+      `${DATABASE.COLUMNS.USERS.GOOGLE_ID}.eq.${googleUser.google_id},${DATABASE.COLUMNS.USERS.EMAIL}.eq.${googleUser.email}`
+    )
+    .is(DATABASE.COLUMNS.USERS.DELETED_AT, null)
+    .single<User>();
+
+  let user: User;
+  let isNewUser = false;
+
+  if (existingUser) {
+    // User exists - update google_id and avatar if needed
+    if (
+      !existingUser.google_id ||
+      existingUser.avatar_url !== googleUser.avatar_url
+    ) {
+      const { data: updatedUser, error: updateError } = await supabase
+        .from(DATABASE.TABLES.USERS)
+        .update({
+          google_id: googleUser.google_id,
+          avatar_url: googleUser.avatar_url,
+        })
+        .eq(DATABASE.COLUMNS.USERS.ID, existingUser.id)
+        .select("*")
+        .single<User>();
+
+      if (updateError || !updatedUser) {
+        throw new AuthenticationError(MESSAGES.DATABASE.QUERY_ERROR);
+      }
+      user = updatedUser;
+    } else {
+      user = existingUser;
+    }
+  } else {
+    // Create new user with Google info (no password)
+    const { data: newUser, error: createError } = await supabase
+      .from(DATABASE.TABLES.USERS)
+      .insert({
+        name: googleUser.name,
+        email: googleUser.email,
+        google_id: googleUser.google_id,
+        avatar_url: googleUser.avatar_url,
+        role: AUTH.ROLES.USER,
+      })
+      .select("*")
+      .single<User>();
+
+    if (createError || !newUser) {
+      throw new AuthenticationError(MESSAGES.DATABASE.QUERY_ERROR);
+    }
+
+    user = newUser;
+    isNewUser = true;
+  }
+
+  // Generate tokens
+  const tokenPayload: Omit<JwtPayload, "type" | "iat" | "exp"> = {
+    userId: user.id,
+    email: user.email,
+    role: user.role,
+  };
+
+  const tokens = generateTokenPair(tokenPayload);
+
+  return {
+    user: sanitizeUser(user),
+    tokens,
+    isNewUser,
+  };
 };

@@ -45,5 +45,9 @@ export const AUTH_STRINGS = {
     GENERIC: "Something went wrong. Please try again.",
     INVALID_CREDENTIALS: "Invalid email or password",
     EMAIL_EXISTS: "An account with this email already exists",
+    GOOGLE_SIGN_IN_FAILED: "Google sign-in failed. Please try again.",
+    GOOGLE_BLOCKED: "Google sign-in may be blocked. Please try the popup.",
+    GOOGLE_LOAD_FAILED:
+      "Failed to load Google sign-in. Please refresh the page.",
   },
 } as const;

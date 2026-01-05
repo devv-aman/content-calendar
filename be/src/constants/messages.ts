@@ -15,6 +15,9 @@ export const MESSAGES = {
     TOKEN_INVALID: "Invalid token",
     REFRESH_TOKEN_REQUIRED: "Refresh token is required",
     ACCESS_TOKEN_REQUIRED: "Access token is required",
+    GOOGLE_LOGIN_SUCCESS: "Google login successful",
+    GOOGLE_TOKEN_INVALID: "Invalid Google token",
+    GOOGLE_TOKEN_REQUIRED: "Google credential is required",
   },
 
   // Validation

@@ -6,6 +6,7 @@ export const ROUTES = {
     BASE: "/auth",
     LOGIN: "/login",
     REGISTER: "/register",
+    GOOGLE: "/google",
     LOGOUT: "/logout",
     REFRESH: "/refresh",
     ME: "/me",
