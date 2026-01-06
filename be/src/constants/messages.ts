@@ -41,4 +41,19 @@ export const MESSAGES = {
     CONNECTION_ERROR: "Database connection error",
     QUERY_ERROR: "Database query error",
   },
+
+  // Posts
+  POSTS: {
+    CREATED: "Post created successfully",
+    UPDATED: "Post updated successfully",
+    DELETED: "Post deleted successfully",
+    FETCHED: "Post fetched successfully",
+    LIST_FETCHED: "Posts fetched successfully",
+    NOT_FOUND: "Post not found",
+    FORBIDDEN: "You are not authorized to modify this post",
+    FILE_UPLOAD_FAILED: "Failed to upload file",
+    FILE_DELETE_FAILED: "Failed to delete file",
+    INVALID_FILE_TYPE: "Invalid file type",
+    FILE_TOO_LARGE: "File size exceeds the maximum allowed limit",
+  },
 } as const;

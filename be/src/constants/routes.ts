@@ -18,6 +18,11 @@ export const ROUTES = {
   },
 
   HEALTH: "/health",
+
+  POSTS: {
+    BASE: "/posts",
+    BY_ID: "/:id",
+  },
 } as const;
 
 export const getFullPath = (basePath: string, subPath: string): string => {

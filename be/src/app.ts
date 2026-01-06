@@ -13,6 +13,7 @@ import {
   notFoundHandler,
 } from "./middlewares/index.js";
 import { authRoutes } from "./modules/auth/index.js";
+import { postsRoutes } from "./modules/posts/index.js";
 import { sendSuccess } from "./utils/response.js";
 
 export const createApp = (): Application => {
@@ -60,6 +61,7 @@ export const createApp = (): Application => {
   // API routes
   const apiPrefix = `${ROUTES.API_PREFIX}${ROUTES.API_VERSION}`;
   app.use(`${apiPrefix}${ROUTES.AUTH.BASE}`, authRoutes);
+  app.use(`${apiPrefix}${ROUTES.POSTS.BASE}`, postsRoutes);
 
   // 404 handler
   app.use(notFoundHandler);

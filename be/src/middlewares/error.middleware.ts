@@ -34,20 +34,14 @@ export const errorHandler = (
     sendError(
       res,
       ERROR_CODES.UNPROCESSABLE_ENTITY,
-      MESSAGES.VALIDATION.VALIDATION_FAILED,
-      errors
+      `${MESSAGES.VALIDATION.VALIDATION_FAILED}: ${errors}`
     );
     return;
   }
 
   // Handle custom AppError
   if (err instanceof AppError) {
-    sendError(
-      res,
-      err.statusCode,
-      err.message,
-      env.NODE_ENV === "development" ? err.stack : undefined
-    );
+    sendError(res, err.statusCode, err.message);
     return;
   }
 
@@ -70,12 +64,7 @@ export const errorHandler = (
       ? MESSAGES.SERVER.INTERNAL_ERROR
       : err.message || MESSAGES.SERVER.INTERNAL_ERROR;
 
-  sendError(
-    res,
-    statusCode,
-    message,
-    env.NODE_ENV === "development" ? err.stack : undefined
-  );
+  sendError(res, statusCode, message);
 };
 
 export const notFoundHandler = (

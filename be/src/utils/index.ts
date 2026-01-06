@@ -29,3 +29,11 @@ export {
   ConflictError,
   DatabaseError,
 } from "./errors.js";
+
+export {
+  uploadFile,
+  deleteFile,
+  deletePostFiles,
+  getFilePathFromUrl,
+  type UploadResult,
+} from "./storage.js";

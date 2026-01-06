@@ -45,6 +45,53 @@ const options: swaggerJsdoc.Options = {
             password: { type: "string", minLength: 8 },
           },
         },
+        Post: {
+          type: "object",
+          properties: {
+            id: { type: "string", format: "uuid" },
+            user_id: { type: "string", format: "uuid" },
+            title: { type: "string" },
+            content: { type: "string" },
+            channel: {
+              type: "array",
+              items: {
+                type: "string",
+                enum: [
+                  "twitter",
+                  "facebook",
+                  "instagram",
+                  "youtube",
+                  "linkedin",
+                ],
+              },
+              description: "Array of social media channels",
+            },
+            scheduled_time: { type: "string", format: "date-time" },
+            file_url: { type: "string", nullable: true },
+            file_name: { type: "string", nullable: true },
+            file_type: { type: "string", nullable: true },
+            created_at: { type: "string", format: "date-time" },
+            updated_at: { type: "string", format: "date-time" },
+          },
+        },
+        CreatePostRequest: {
+          type: "object",
+          required: ["title", "content", "channel", "scheduled_time"],
+          properties: {
+            title: { type: "string", maxLength: 255 },
+            content: { type: "string", maxLength: 10000 },
+            channel: {
+              type: "string",
+              description:
+                "Comma-separated list of channels (e.g., twitter,instagram)",
+            },
+            scheduled_time: {
+              type: "string",
+              description: "Format: YYYY-MM-DD HH:MM:SS",
+            },
+            file: { type: "string", format: "binary" },
+          },
+        },
         ApiResponse: {
           type: "object",
           properties: {
