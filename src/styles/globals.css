@@ -137,6 +137,18 @@
     --star-color-primary: rgba(105, 90, 220, 0.7);
     --star-color-accent1: rgba(255, 160, 190, 0.6);
     --star-color-accent2: rgba(255, 202, 108, 0.6);
+
+    /* --- Social Platform Colors --- */
+    --platform-instagram: #E1306C;
+    --platform-facebook: #1877F2;
+    --platform-twitter: #1DA1F2;
+    --platform-youtube: #FF0000;
+    --platform-linkedin: #0A66C2;
+    --platform-instagram-bg: rgba(225, 48, 108, 0.12);
+    --platform-facebook-bg: rgba(24, 119, 242, 0.12);
+    --platform-twitter-bg: rgba(29, 161, 242, 0.12);
+    --platform-youtube-bg: rgba(255, 0, 0, 0.12);
+    --platform-linkedin-bg: rgba(10, 102, 194, 0.12);
   }
 
   .dark {
@@ -198,6 +210,18 @@
     --star-color-primary: rgba(177, 142, 249, 0.8);
     --star-color-accent1: rgba(255, 120, 184, 0.7);
     --star-color-accent2: rgba(255, 200, 87, 0.7);
+
+    /* --- Social Platform Colors (Dark Mode) --- */
+    --platform-instagram: #F56EA0;
+    --platform-facebook: #4C9AFF;
+    --platform-twitter: #5CBCFF;
+    --platform-youtube: #FF4444;
+    --platform-linkedin: #4DA3FF;
+    --platform-instagram-bg: rgba(245, 110, 160, 0.16);
+    --platform-facebook-bg: rgba(76, 154, 255, 0.16);
+    --platform-twitter-bg: rgba(92, 188, 255, 0.16);
+    --platform-youtube-bg: rgba(255, 68, 68, 0.16);
+    --platform-linkedin-bg: rgba(77, 163, 255, 0.16);
   }
 
   * {
