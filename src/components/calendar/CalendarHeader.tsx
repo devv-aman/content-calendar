@@ -21,11 +21,11 @@ import {
   PLATFORM_CONFIG,
   ALL_PLATFORMS,
 } from "./calendar.constants";
-import type { SocialPlatform, ViewMode, DateRange } from "./calendar.types";
+import type { PostChannel, ViewMode, DateRange } from "./calendar.types";
 
 interface CalendarHeaderProps {
-  selectedChannel: SocialPlatform | "all";
-  onChannelChange: (channel: SocialPlatform | "all") => void;
+  selectedChannel: PostChannel | "all";
+  onChannelChange: (channel: PostChannel | "all") => void;
   viewMode: ViewMode;
   onViewModeChange: (mode: ViewMode) => void;
   dateRange: DateRange;
@@ -82,7 +82,7 @@ export function CalendarHeader({
         <Select
           value={selectedChannel}
           onValueChange={(value) =>
-            onChannelChange(value as SocialPlatform | "all")
+            onChannelChange(value as PostChannel | "all")
           }
         >
           <SelectTrigger className="w-40 bg-(--neutral-bg-base) border-(--neutral-border-main)">

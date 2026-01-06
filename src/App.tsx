@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "@/context/ThemeContext";
 import { SidebarProvider } from "@/context/SidebarContext";
 import { AuthProvider } from "@/context/AuthContext";
+import { PostsProvider } from "@/context/PostsContext";
 import { Layout } from "@/components/layout";
 import { ProtectedRoute } from "@/components/auth";
 import { Home, Auth, Dashboard, NotFound } from "@/pages";
@@ -24,7 +25,9 @@ function App() {
                   path={ROUTES.DASHBOARD}
                   element={
                     <ProtectedRoute>
-                      <Dashboard />
+                      <PostsProvider>
+                        <Dashboard />
+                      </PostsProvider>
                     </ProtectedRoute>
                   }
                 />

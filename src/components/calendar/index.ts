@@ -4,15 +4,22 @@ export { CalendarGrid } from "./CalendarGrid";
 export { CalendarDayCell } from "./CalendarDayCell";
 export { PostCard } from "./PostCard";
 export { PostDetailsSidebar } from "./PostDetailsSidebar";
+export { PostDrawer } from "./PostDrawer";
 
 export type {
   SocialPlatform,
+  PostChannel,
   PostStatus,
+  Post,
   ScheduledPost,
   CalendarDay,
   ViewMode,
   DateRange,
   CalendarFilters,
+  CreatePostInput,
+  UpdatePostInput,
+  PostsQueryParams,
+  DrawerMode,
 } from "./calendar.types";
 
 export {
@@ -22,8 +29,7 @@ export {
 } from "./calendar.constants";
 
 export {
-  MOCK_POSTS,
   getPostsForDate,
-  filterPostsByPlatform,
+  filterPostsByChannel,
   formatPostTime,
 } from "./calendar.data";

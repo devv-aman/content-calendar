@@ -1,24 +1,20 @@
 import { useMemo } from "react";
 import { CalendarDayCell } from "./CalendarDayCell";
 import { CALENDAR_STRINGS } from "./calendar.constants";
-import { getPostsForDate, filterPostsByPlatform } from "./calendar.data";
-import type {
-  CalendarDay,
-  ScheduledPost,
-  SocialPlatform,
-} from "./calendar.types";
+import { getPostsForDate, filterPostsByChannel } from "./calendar.data";
+import type { CalendarDay, ScheduledPost, PostChannel } from "./calendar.types";
 
 interface CalendarGridProps {
   currentDate: Date;
   posts: ScheduledPost[];
-  selectedChannel: SocialPlatform | "all";
+  selectedChannel: PostChannel | "all";
   onPostClick: (post: ScheduledPost) => void;
 }
 
 function getCalendarDays(
   date: Date,
   posts: ScheduledPost[],
-  selectedChannel: SocialPlatform | "all"
+  selectedChannel: PostChannel | "all"
 ): CalendarDay[] {
   const year = date.getFullYear();
   const month = date.getMonth();
@@ -41,7 +37,7 @@ function getCalendarDays(
   const prevMonthLastDay = new Date(year, month, 0).getDate();
   for (let i = startDayOfWeek - 1; i >= 0; i--) {
     const dayDate = new Date(year, month - 1, prevMonthLastDay - i);
-    const dayPosts = filterPostsByPlatform(
+    const dayPosts = filterPostsByChannel(
       getPostsForDate(dayDate, posts),
       selectedChannel
     );
@@ -57,7 +53,7 @@ function getCalendarDays(
   for (let day = 1; day <= lastDay.getDate(); day++) {
     const dayDate = new Date(year, month, day);
     dayDate.setHours(0, 0, 0, 0);
-    const dayPosts = filterPostsByPlatform(
+    const dayPosts = filterPostsByChannel(
       getPostsForDate(dayDate, posts),
       selectedChannel
     );
@@ -73,7 +69,7 @@ function getCalendarDays(
   const remainingDays = 42 - days.length;
   for (let i = 1; i <= remainingDays; i++) {
     const dayDate = new Date(year, month + 1, i);
-    const dayPosts = filterPostsByPlatform(
+    const dayPosts = filterPostsByChannel(
       getPostsForDate(dayDate, posts),
       selectedChannel
     );
