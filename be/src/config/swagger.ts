@@ -87,7 +87,8 @@ const options: swaggerJsdoc.Options = {
             },
             scheduled_time: {
               type: "string",
-              description: "Format: YYYY-MM-DD HH:MM:SS",
+              format: "date-time",
+              description: "ISO 8601 format (e.g., 2024-01-15T10:30:00.000Z)",
             },
             file: { type: "string", format: "binary" },
           },

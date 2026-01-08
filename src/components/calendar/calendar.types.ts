@@ -44,7 +44,7 @@ export interface CreatePostInput {
   title: string;
   content: string;
   channel: string; // Comma-separated channels for form-data
-  scheduled_time: string; // Format: "YYYY-MM-DD HH:MM:SS"
+  scheduled_time: string; // ISO 8601 format
   file?: File;
 }
 

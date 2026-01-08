@@ -22,16 +22,12 @@ const channelsArraySchema = z
     z.array(channelEnum).min(1, { message: "At least one channel is required" })
   );
 
-// Scheduled time validation (YYYY-MM-DD HH:MM:SS format)
+// Scheduled time validation (ISO 8601 format)
 const scheduledTimeSchema = z
   .string({ required_error: MESSAGES.VALIDATION.REQUIRED_FIELD })
-  .regex(
-    /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/,
-    "Invalid format. Use YYYY-MM-DD HH:MM:SS"
-  )
   .refine(
-    (val) => !isNaN(Date.parse(val.replace(" ", "T"))),
-    "Invalid date/time value"
+    (val) => !isNaN(Date.parse(val)),
+    "Invalid date/time format. Use ISO 8601 format"
   );
 
 // Date only validation (YYYY-MM-DD format)

@@ -47,14 +47,11 @@ export function formatDateForApi(date: Date): string {
 }
 
 /**
- * Format date and time as YYYY-MM-DD HH:MM:SS for API form data
+ * Format date and time as ISO 8601 for API form data
+ * Uses toISOString() to include UTC timezone info (e.g., 2024-01-15T18:30:00.000Z)
  */
 export function formatDateTimeForApi(date: Date): string {
-  const dateStr = formatDateForApi(date);
-  const hours = String(date.getHours()).padStart(2, "0");
-  const minutes = String(date.getMinutes()).padStart(2, "0");
-  const seconds = String(date.getSeconds()).padStart(2, "0");
-  return `${dateStr} ${hours}:${minutes}:${seconds}`;
+  return date.toISOString();
 }
 
 /**

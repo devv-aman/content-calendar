@@ -40,7 +40,7 @@ export const createPost = async (
       title: input.title,
       content: input.content,
       channel: input.channel,
-      scheduled_time: input.scheduled_time.replace(" ", "T"),
+      scheduled_time: input.scheduled_time,
     })
     .select("*")
     .single<Post>();
@@ -179,7 +179,7 @@ export const updatePost = async (
   if (input.content !== undefined) updateData.content = input.content;
   if (input.channel !== undefined) updateData.channel = input.channel;
   if (input.scheduled_time !== undefined) {
-    updateData.scheduled_time = input.scheduled_time.replace(" ", "T");
+    updateData.scheduled_time = input.scheduled_time;
   }
 
   // Handle file update
